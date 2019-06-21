@@ -12,31 +12,22 @@ const createResponse = (header, message, imageURL) => {
 }
 
 const createBlocks = (response, header, message, imageURL) => {
-  if (header) {
-    response.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '*' + header + '*'
-      }
-    })
-  }
-  if (message) {
-    response.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: message
-      }
-    })
-  }
-  if (imageURL) {
-    response.blocks.push({
-      type: 'image',
-      image_url: imageURL,
-      alt_text: 'an image'
-    })
-  }
+  response.blocks.push({
+    'type': 'section',
+    'text': {
+      'type': 'mrkdwn',
+      'text': 'Hi Welcome to tournabot '
+    },
+    'accessory': {
+      'type': 'button',
+      'text': {
+        'type': 'plain_text',
+        'text': 'New Tournament',
+        'emoji': true
+      },
+      'value': 'new_tournament'
+    }
+  })
   console.log(JSON.stringify(response))
   return response
 }
