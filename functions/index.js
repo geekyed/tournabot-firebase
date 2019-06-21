@@ -1,8 +1,7 @@
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+const { mainMenu } = require('./actions/mainMenu')
+const { newTournament } = require('./actions/newTournament')
+
+exports.mainMenu = functions.https.onRequest(mainMenu)
+exports.newTournament = functions.https.onRequest(newTournament)
