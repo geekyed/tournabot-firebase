@@ -1,35 +1,32 @@
-const mainMenu = (request, response) => {
-  response.status(200).send(createResponse('Hi', 'Im David', 'https://i.imgur.com/IQoTsAX.png'))
+const mainMenu = async (request, response) => {
+  response.status(200).send(createResponse())
 }
 
-const createResponse = (header, message, imageURL) => {
+const createResponse = () => {
   let response = {
     response_type: 'in_channel',
     blocks: []
   }
 
-  return createBlocks(response, header, message, imageURL)
+  return createButton(response, 'New Tournament', 'new')
 }
 
-const createBlocks = (response, header, message, imageURL) => {
+const createButton = (response, name, value) => {
   response.blocks.push({
-    'type': 'section',
-    'text': {
-      'type': 'mrkdwn',
-      'text': 'Hi Welcome to tournabot '
-    },
-    'accessory': {
-      'type': 'button',
-      'text': {
-        'type': 'plain_text',
-        'text': 'New Tournament',
-        'emoji': true
-      },
-      'value': 'new_tournament'
-    }
+    'type': 'actions',
+    'elements': [
+      {
+        'type': 'button',
+        'text': {
+          'type': 'plain_text',
+          'text': name,
+          'emoji': true
+        },
+        'value': value
+      }
+    ]
   })
-  console.log(JSON.stringify(response))
   return response
 }
 
-module.exports = { mainMenu }
+module.exports = mainMenu
