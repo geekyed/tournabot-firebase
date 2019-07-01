@@ -10,12 +10,14 @@ const interactive = async (request, response) => {
     return response.send(405, 'Expected a message action payload.')
   }
 
+  console.log(request.body.payload)
+
   const requestPayload = JSON.parse(request.body.payload)
 
   const publishClient = new PubSub.v1.PublisherClient()
 
   const messagesElement = {
-    data: {
+    attributes: {
       user: requestPayload.user.id,
       team: requestPayload.team.id,
       channel: requestPayload.channel.id
