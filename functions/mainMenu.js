@@ -17,6 +17,7 @@ const createButton = (response, name, value) => {
     'elements': [
       {
         'type': 'button',
+        'action_id': 'new',
         'text': {
           'type': 'plain_text',
           'text': name,
