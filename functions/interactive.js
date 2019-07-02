@@ -35,7 +35,7 @@ const interactive = async (request, response) => {
     console.error(`error publishing`, err)
   }
 
-  response.status(200).send()
+  return response.status(200).send()
 }
 
 module.exports = interactive
