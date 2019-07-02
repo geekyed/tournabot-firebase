@@ -1,11 +1,20 @@
+const fetch = require('node-fetch')
+const createTextResponse = require('./slackResponse/textResponse')
+
 const interactiveResponse = async (message) => {
-  try {
-    let messageData = message.attributes
-    console.log(`MY DATA: ${JSON.stringify(messageData)}`)
-  } catch (e) {
-    console.error('PubSub message was not JSON', e)
+  const metadata = message.attributes
+
+  const slackResponse = createTextResponse(['Hi I am Ed'], JSON.stringify(message.attributes))
+
+  const responseBody = {
+    method: 'POST',
+    body: JSON.stringify(slackResponse),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
-  return null
+
+  await fetch(metadata.responseURL, responseBody)
 }
 
 module.exports = interactiveResponse
