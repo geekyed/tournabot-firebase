@@ -1,20 +1,9 @@
-const fetch = require('node-fetch')
-const createTextResponse = require('./slackResponse/textResponse')
+const { sendTextResponse } = require('./slackResponse/textResponse')
 
 const interactiveResponse = async (message) => {
   const metadata = message.attributes
 
-  const slackResponse = createTextResponse(['Hi I am Ed'], JSON.stringify(message.attributes))
-
-  const responseBody = {
-    method: 'POST',
-    body: JSON.stringify(slackResponse),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-
-  await fetch(metadata.responseURL, responseBody)
+  await sendTextResponse(metadata.responseURL, [`New Tournament created with ID: `], `team: ${metadata.team}, channel: ${metadata.channel}`)
 }
 
 module.exports = interactiveResponse

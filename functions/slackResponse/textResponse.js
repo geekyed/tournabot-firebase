@@ -1,3 +1,17 @@
+const fetch = require('node-fetch')
+
+const sendTextResponse = async (responseURL, messages, context) => {
+  const responseBody = {
+    method: 'POST',
+    body: JSON.stringify(createTextResponse(messages, context)),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  await fetch(responseURL, responseBody)
+}
+
 const createTextResponse = (messages, context) => {
   let response = {
     response_type: 'in_channel',
@@ -34,4 +48,4 @@ const addTextBlock = (response, text) => {
   return response
 }
 
-module.exports = createTextResponse
+module.exports = { createTextResponse, sendTextResponse }
