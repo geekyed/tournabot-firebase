@@ -10,11 +10,12 @@ const interactive = async (request, response) => {
     return response.send(405, 'Expected a message action payload.')
   }
 
-  const requestPayload = JSON.parse(request.body.payload)
+  console.log(`Interactive Element Payload: ${request.body.payload}`)
 
+  const requestPayload = JSON.parse(request.body.payload)
   const publishClient = new PubSub.v1.PublisherClient()
 
-  const messagesElement = {
+  let messagesElement = {
     attributes: {
       team: requestPayload.team.id,
       channel: requestPayload.channel.id,
@@ -22,9 +23,14 @@ const interactive = async (request, response) => {
       action: requestPayload.actions[0].action_id
     }
   }
+
+  if (requestPayload.actions[0].type === 'static_select') {
+    messagesElement.attributes.selectValue = requestPayload.actions[0].selected_option.value
+  }
+
   const messages = [messagesElement]
   const pubRequest = {
-    topic: publishClient.topicPath('tournabot', 'interactiveResponse'),
+    topic: publishClient.topicPath('tournabot', 'interactive'),
     messages: messages
   }
 

@@ -13,7 +13,6 @@ const set = async (channelId, tournamentID) => {
 
 const get = async channelId => {
   try {
-    console.log(`Getting current for ${channelId}`)
     const current = await admin.firestore().collection('current').doc(channelId).get()
     return current.get('id')
   } catch (err) {
