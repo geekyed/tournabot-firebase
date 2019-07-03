@@ -8,22 +8,23 @@ const createResponse = () => {
     blocks: []
   }
 
-  return createButton(response, 'New Tournament', 'new')
+  response = createButton(response, 'New Tournament', 'new')
+  response = createButton(response, 'Change Tournament', 'change')
+  return response
 }
 
-const createButton = (response, name, value) => {
+const createButton = (response, name, actionId) => {
   response.blocks.push({
     'type': 'actions',
     'elements': [
       {
         'type': 'button',
-        'action_id': 'new',
+        'action_id': actionId,
         'text': {
           'type': 'plain_text',
           'text': name,
           'emoji': true
-        },
-        'value': value
+        }
       }
     ]
   })
