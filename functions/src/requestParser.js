@@ -4,18 +4,28 @@ const parseRequest = async requestBody => {
 
   const channelIdWithTeam = `${requestBody.team_id}-${requestBody.channel_id}`
 
+  let requestData
+
   switch (command.toLowerCase()) {
     case 'new':
-      return { type: 'new', data: { channelID: channelIdWithTeam, name: parameters[0] } }
+      requestData = { type: 'new', data: { name: parameters[0] } }
+      break
     case 'players':
-      return { type: 'players', data: { channelID: channelIdWithTeam, players: parameters } }
+      requestData = { type: 'players', data: { players: parameters } }
+      break
     case 'result':
-      return { type: 'result', data: { channelID: channelIdWithTeam, userID: requestBody.user_id } }
+      requestData = { type: 'result', data: { userID: requestBody.user_id } }
+      break
     case 'help':
-      return { type: 'help' }
+      requestData = { type: 'help' }
+      break
     default:
       throw new Error('Command not found')
   }
+
+  requestData.data.channelID = channelIdWithTeam
+
+  return requestData
 }
 
 const stripCommand = (text) => {
