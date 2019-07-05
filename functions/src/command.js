@@ -18,7 +18,6 @@ const command = async (request, response) => {
   let command
   try {
     command = await parseRequest(request.body)
-    console.log(`Command: ${JSON.stringify(command)}`)
   } catch (err) {
     console.error(err)
     return response.status(200).send(createEphemeralResponse(`${err}` + ' try `/tournaBot help`'))
