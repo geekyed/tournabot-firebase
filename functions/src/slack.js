@@ -5,11 +5,13 @@ const ephemeralResponse = require('./slackResponses/ephemeralResponse')
 const helpResponse = require('./slackResponses/helpResponse')
 const newRunner = require('./commandRunners/newRunner')
 const playersRunner = require('./commandRunners/playersRunner')
+const startRunner = require('./commandRunners/startRunner')
 const parseRequest = require('./requestParser')
 
 const commandRunners = {
   new: newRunner,
-  players: playersRunner
+  players: playersRunner,
+  start: startRunner
 }
 
 exports.slashCommand = async (request, response) => {

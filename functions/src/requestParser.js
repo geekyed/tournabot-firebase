@@ -4,7 +4,7 @@ const parseRequest = async requestBody => {
 
   const channelIdWithTeam = `${requestBody.team_id}-${requestBody.channel_id}`
 
-  let data
+  let data = {}
 
   switch (firstParameter.toLowerCase()) {
     case 'new':
@@ -12,6 +12,10 @@ const parseRequest = async requestBody => {
       break
     case 'players':
       data = { players: parameters }
+      break
+    case 'start':
+    case 'scores':
+    case 'points':
       break
     case 'result':
       data = { userID: requestBody.user_id }

@@ -5,7 +5,7 @@ const execute = async data => {
   const tournamentID = await current.get(data.channelID)
   const myTournament = await tournament.get(tournamentID)
 
-  if (!myTournament) throw new Error(`${tournamentID} tournament does not exist!,`)
+  if (!myTournament) throw new Error(`${tournamentID} tournament does not exist!`)
 
   if (!myTournament.players) myTournament.players = []
 
