@@ -5,13 +5,11 @@ const ephemeralResponse = require('./slackResponses/ephemeralResponse')
 const helpResponse = require('./slackResponses/helpResponse')
 const newRunner = require('./commandRunners/newRunner')
 const playersRunner = require('./commandRunners/playersRunner')
-const resultRunner = require('./commandRunners/resultRunner')
 const parseRequest = require('./requestParser')
 
 const commandRunners = {
   new: newRunner,
-  players: playersRunner,
-  result: resultRunner
+  players: playersRunner
 }
 
 exports.slashCommand = async (request, response) => {
@@ -66,31 +64,3 @@ exports.slashCommandRunner = async message => {
     await ephemeralResponse.send(`${err}` + ' try `/tournaBot help`')
   }
 }
-
-// const currentTournament = await currentData.get(command.data.channelID)
-// switch (metadata.action) {
-//     case 'new': {
-//       const tournamentID = uuidv1()
-//       await tournamentData.set(tournamentID)
-//       await currentData.set(globalChannelId, tournamentID)
-//       await sendTextResponse(metadata.responseURL, [`New Tournament created!`], `current tournament ${tournamentID}`)
-//       break
-//     }
-//     case 'change': {
-//       const tournamentIds = await tournamentData.getIds()
-
-//       await sendSelectResponse(
-//         metadata.responseURL,
-//         'selectCurrent',
-//         'Select Current Tournament',
-//         'Select Tournament',
-//         tournamentIds,
-//         `current tournament ${currentTournament}`)
-//       break
-//     }
-//     case 'selectCurrent': {
-//       await currentData.set(globalChannelId, metadata.selectValue)
-//       await sendTextResponse(metadata.responseURL, [`Current tournament changed!`], `current tournament ${metadata.selectValue}`)
-//       break
-//     }
-//   }
