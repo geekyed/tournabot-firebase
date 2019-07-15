@@ -1,7 +1,7 @@
 
 const uuidv1 = require('uuid/v1')
-const { sendTextResponse } = require('./slackResponse/textResponse')
-const { sendSelectResponse } = require('./slackResponse/selectResponse')
+const { sendTextResponse } = require('./slackResponses/textResponse')
+const { sendSelectResponse } = require('./slackResponses/selectResponse')
 const tournament = require('./data/tournament')
 const current = require('./data/current')
 

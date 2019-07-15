@@ -1,9 +1,9 @@
 const fetch = require('node-fetch')
 
-const sendButtonsResponse = async (responseURL, type, buttons, context) => {
+const send = async (responseURL, type, buttons, context) => {
   const responseBody = {
     method: 'POST',
-    body: JSON.stringify(createButtonsResponse(type, buttons, context)),
+    body: JSON.stringify(create(type, buttons, context)),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -12,7 +12,7 @@ const sendButtonsResponse = async (responseURL, type, buttons, context) => {
   await fetch(responseURL, responseBody)
 }
 
-const createButtonsResponse = (type, buttons) => {
+const create = (type, buttons) => {
   let response = {
     response_type: type,
     blocks: []
@@ -41,4 +41,4 @@ const createButton = (response, name, actionId) => {
   return response
 }
 
-module.exports = { createButtonsResponse, sendButtonsResponse }
+module.exports = { create, send }

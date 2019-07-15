@@ -1,4 +1,4 @@
-const ephemeralResponse = text => {
+exports.create = text => {
   return {
     response_type: 'ephemeral',
     blocks: [{
@@ -10,5 +10,3 @@ const ephemeralResponse = text => {
     }]
   }
 }
-
-module.exports = ephemeralResponse

@@ -1,9 +1,9 @@
 const fetch = require('node-fetch')
 
-const sendSelectResponse = async (responseURL, actionId, label, placeholderText, selectOptions, context) => {
+const send = async (responseURL, actionId, label, placeholderText, selectOptions, context) => {
   const responseBody = {
     method: 'POST',
-    body: JSON.stringify(createSelectResponse(actionId, label, placeholderText, selectOptions, context)),
+    body: JSON.stringify(create(actionId, label, placeholderText, selectOptions, context)),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -12,7 +12,7 @@ const sendSelectResponse = async (responseURL, actionId, label, placeholderText,
   await fetch(responseURL, responseBody)
 }
 
-const createSelectResponse = (actionId, label, placeholderText, selectOptions, context) => {
+const create = (actionId, label, placeholderText, selectOptions, context) => {
   let response = {
     response_type: 'in_channel',
     blocks: [{
@@ -66,4 +66,4 @@ const addOption = (options, optionText) => {
   })
 }
 
-module.exports = { createSelectResponse, sendSelectResponse }
+module.exports = { create, send }

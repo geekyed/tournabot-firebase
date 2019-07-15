@@ -17,7 +17,7 @@ const execute = async data => {
 
   await tournament.set(myTournament)
 
-  let messages = ['Current Players']
+  let messages = ['*Current Players*']
   myTournament.players.forEach(player => messages.push(player))
   return { messages, context: `current tournament ${tournamentID}` }
 }

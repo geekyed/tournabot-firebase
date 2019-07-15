@@ -1,6 +1,6 @@
 const ephemeralResponse = require('./ephemeralResponse')
 
-const createHelpResponse = error => {
+exports.create = error => {
   let slackResponse = ephemeralResponse(error)
   slackResponse.blocks.push({
     type: 'section',
@@ -22,5 +22,3 @@ const helpText = '`/tournaBot new <name>` Create a new tournament\n' +
 '`/tournaBot scores` Get the full scores\n' +
 '`/tournaBot tiebreak` Explain the tie break numbers\n' +
 '`/tournaBot reminder` Remind players that havent played their games yet to get a move on.\n'
-
-module.exports = createHelpResponse
