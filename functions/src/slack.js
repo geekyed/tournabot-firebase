@@ -78,8 +78,6 @@ const verifyRequest = request => {
   const signature = request.headers['x-slack-signature']
   const timestamp = request.headers['x-slack-request-timestamp']
 
-  console.log(slackSecret)
-
   const hmac = crypto.createHmac('sha256', slackSecret)
   const [version, hash] = signature.split('=')
 
