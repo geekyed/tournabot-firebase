@@ -1,4 +1,7 @@
 const PubSub = require('@google-cloud/pubsub')
+const functions = require('firebase-functions')
+const crypto = require('crypto')
+const timingSafeCompare = require('tsscmp')
 
 const textResponse = require('./slackResponses/textResponse')
 const ephemeralResponse = require('./slackResponses/ephemeralResponse')
@@ -13,54 +16,19 @@ const commandRunners = {
   players: playersRunner,
   start: startRunner
 }
-/**
-   * Method to verify signature of requests
-   *
-   * @param {string} signingSecret - Signing secret used to verify request signature
-   * @param {Object} requestHeaders - Request headers
-   * @param {string} body - Raw body string
-   * @returns {boolean} Indicates if request is verified
-   */
-// function verifyRequestSignature(signingSecret, requestHeaders, body) {
-//   // Request signature
-//   const signature = requestHeaders['x-slack-signature'];
-//   // Request timestamp
-//   const ts = requestHeaders['x-slack-request-timestamp'];
 
-//   // Divide current date to match Slack ts format
-//   // Subtract 5 minutes from current time
-//   const fiveMinutesAgo = Math.floor(Date.now() / 1000) - (60 * 5);
-
-//   if (ts < fiveMinutesAgo) {
-//     debug('request is older than 5 minutes');
-//     const error = new Error('Slack request signing verification failed');
-//     error.code = errorCodes.REQUEST_TIME_FAILURE;
-//     throw error;
-//   }
-
-//   const hmac = crypto.createHmac('sha256', signingSecret);
-//   const [version, hash] = signature.split('=');
-//   hmac.update(`${version}:${ts}:${body}`);
-
-//   if (!timingSafeCompare(hash, hmac.digest('hex'))) {
-//     debug('request signature is not valid');
-//     const error = new Error('Slack request signing verification failed');
-//     error.code = errorCodes.SIGNATURE_VERIFICATION_FAILURE;
-//     throw error;
-//   }
-
-//   debug('request signing verification success');
-//   return true;
-// }
+const slackSecret = functions.config().tournabot.slacksecret
 
 exports.slashCommand = async (request, response) => {
   if (request.method !== 'POST') {
     console.error(`Got unsupported ${request.method} request. Expected POST.`)
     return response.send(405, 'Only POST requests are accepted')
   }
-  if (!request.body) {
+  if (!request.body || !request.headers) {
     return response.send(405, 'Expected a message action payload.')
   }
+
+  if (!verifyRequest(request)) return response.send(401, 'Unauthorized')
 
   console.log(`Command Element Payload: ${JSON.stringify(request.body)}`)
 
@@ -104,4 +72,25 @@ exports.slashCommandRunner = async message => {
   } catch (err) {
     await ephemeralResponse.send(`${err}` + ' try `/tournaBot help`')
   }
+}
+
+const verifyRequest = request => {
+  const signature = request.headers['x-slack-signature']
+  const timestamp = request.headers['x-slack-request-timestamp']
+
+  console.log(slackSecret)
+
+  const hmac = crypto.createHmac('sha256', slackSecret)
+  const [version, hash] = signature.split('=')
+
+  hmac.update(`${version}:${timestamp}:${request.rawBody}`)
+
+  const calculatedHash = hmac.digest('hex')
+  if (!timingSafeCompare(hash, calculatedHash)) {
+    console.log(`request signature is not valid: ${hash} : ${calculatedHash}`)
+    return false
+  }
+
+  console.log('request signing verification success')
+  return true
 }
