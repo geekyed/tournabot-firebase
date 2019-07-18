@@ -9,12 +9,16 @@ const helpResponse = require('./slackResponses/helpResponse')
 const newRunner = require('./commandRunners/newRunner')
 const playersRunner = require('./commandRunners/playersRunner')
 const startRunner = require('./commandRunners/startRunner')
+const scoresRunner = require('./commandRunners/scoresRunner')
+const resultRunner = require('./commandRunners/resultRunner')
 const parseRequest = require('./requestParser')
 
 const commandRunners = {
   new: newRunner,
   players: playersRunner,
-  start: startRunner
+  start: startRunner,
+  scores: scoresRunner,
+  result: resultRunner
 }
 
 const slackSecret = functions.config().tournabot.slacksecret
@@ -44,7 +48,12 @@ exports.slashCommand = async (request, response) => {
 
   const publishClient = new PubSub.v1.PublisherClient()
 
-  let message = { attributes: { command: JSON.stringify(command), responseURL: request.body.response_url } }
+  let message = {
+    attributes: {
+      command: JSON.stringify(command),
+      responseURL: request.body.response_url
+    }
+  }
 
   const pubRequest = {
     topic: publishClient.topicPath('tournabot', 'command'),
@@ -70,7 +79,7 @@ exports.slashCommandRunner = async message => {
 
     await textResponse.send(responseURL, messages, context)
   } catch (err) {
-    await ephemeralResponse.send(`${err}` + ' try `/tournaBot help`')
+    await ephemeralResponse.send(responseURL, `${err}` + ' try `/tournaBot help`')
   }
 }
 

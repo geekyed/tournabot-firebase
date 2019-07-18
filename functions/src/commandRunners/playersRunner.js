@@ -1,7 +1,7 @@
 const tournament = require('../data/tournament')
 const current = require('../data/current')
 
-const execute = async data => {
+exports.execute = async data => {
   const tournamentID = await current.get(data.channelID)
   const myTournament = await tournament.get(tournamentID)
 
@@ -25,5 +25,3 @@ const execute = async data => {
 const elementIsInArray = (myElement, myArray) => {
   return (myArray.findIndex(el => el === myElement) !== -1)
 }
-
-module.exports = { execute }
