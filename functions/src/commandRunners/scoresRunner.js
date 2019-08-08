@@ -21,7 +21,7 @@ exports.execute = async data => {
     })
   })
 
-  return { messages, context: `current tournament ${tournamentID}` }
+  return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
 }
 
 const nameWithoutAt = player => {

@@ -14,5 +14,5 @@ exports.execute = async data => {
 
   await tournament.set(newTournament)
   await current.set(data.channelID, data.name)
-  return { messages: ['Success!', `${data.name} tournament created`], context: `current tournament ${data.name}` }
+  return { type: 'text', data: { messages: ['Success!', `${data.name} tournament created`], context: `current tournament ${data.name}` } }
 }

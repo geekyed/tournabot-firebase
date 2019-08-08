@@ -1,9 +1,9 @@
 const fetch = require('node-fetch')
 
-const send = async (responseURL, messages, context) => {
+const send = async (responseURL, data) => {
   const responseBody = {
     method: 'POST',
-    body: JSON.stringify(create(messages, context)),
+    body: JSON.stringify(create(data.messages, data.context)),
     headers: {
       'Content-Type': 'application/json'
     }

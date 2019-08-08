@@ -21,6 +21,11 @@ const commandRunners = {
   result: resultRunner
 }
 
+const responses = {
+  ephemeral: ephemeralResponse,
+  text: textResponse
+}
+
 const slackSecret = functions.config().tournabot.slacksecret
 
 exports.slashCommand = async (request, response) => {
@@ -67,7 +72,7 @@ exports.slashCommand = async (request, response) => {
     return response.status(200).send(ephemeralResponse.create(`${err}` + ' try `/tournaBot help`'))
   }
 
-  return response.status(200).send(ephemeralResponse.create('Processing...'))
+  return response.status(200).send({ 'response_type': 'in_channel' })
 }
 
 exports.slashCommandRunner = async message => {
@@ -75,9 +80,9 @@ exports.slashCommandRunner = async message => {
   const responseURL = message.attributes.responseURL
 
   try {
-    const { messages, context } = await commandRunners[command.type].execute(command.data)
+    const { type, data } = await commandRunners[command.type].execute(command.data)
 
-    await textResponse.send(responseURL, messages, context)
+    await responses[type].send(responseURL, data)
   } catch (err) {
     await ephemeralResponse.send(responseURL, `${err}` + ' try `/tournaBot help`')
   }

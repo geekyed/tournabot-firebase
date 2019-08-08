@@ -14,7 +14,8 @@ exports.execute = async data => {
 
   let messages = myTournament.rounds[myTournament.currentRound - 1].matches.map(match => `${match.player1} vs ${match.player2}`)
   messages.unshift(`*Pairings for round ${myTournament.currentRound}*`)
-  return { messages, context: `current tournament ${tournamentID}` }
+
+  return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
 }
 
 const isRoundStarted = myTournament => {

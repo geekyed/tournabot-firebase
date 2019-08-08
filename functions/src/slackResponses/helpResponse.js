@@ -1,7 +1,7 @@
 const ephemeralResponse = require('./ephemeralResponse')
 
 exports.create = error => {
-  let slackResponse = ephemeralResponse(error)
+  let slackResponse = ephemeralResponse.create(error)
   slackResponse.blocks.push({
     type: 'section',
     text: {

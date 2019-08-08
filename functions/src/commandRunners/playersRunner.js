@@ -19,7 +19,7 @@ exports.execute = async data => {
 
   let messages = ['*Current Players*']
   myTournament.players.forEach(player => messages.push(player))
-  return { messages, context: `current tournament ${tournamentID}` }
+  return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
 }
 
 const elementIsInArray = (myElement, myArray) => {
