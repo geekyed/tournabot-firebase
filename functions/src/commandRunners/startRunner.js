@@ -1,13 +1,19 @@
 const tournament = require('../data/tournament')
 const current = require('../data/current')
 const scores = require('../scores')
+const totalRounds = require('../totalRounds')
 
 exports.execute = async data => {
   const tournamentID = await current.get(data.channelID)
   let myTournament = await tournament.get(tournamentID)
 
   if (!myTournament) throw new Error(`${tournamentID} tournament does not exist!`)
+
+  if (isRoundFinished(myTournament)) myTournament.currentRound++
+
   if (isRoundStarted(myTournament)) throw new Error('You cannot regenerate a round once a match has been played.')
+
+  if (isTournamentFinished(myTournament)) return { type: 'text', data: { messages: ['Tournament Finished'], context: `current tournament ${tournamentID}` } }
 
   myTournament.rounds[myTournament.currentRound - 1] = generateSwissRound(myTournament)
   await tournament.set(myTournament)
@@ -22,6 +28,13 @@ const isRoundStarted = myTournament => {
   const roundIndex = myTournament.currentRound - 1
   return typeof myTournament.rounds[roundIndex] !== 'undefined' && myTournament.rounds[roundIndex].started
 }
+
+const isRoundFinished = myTournament => {
+  const roundIndex = myTournament.currentRound - 1
+  return myTournament.rounds[roundIndex].matches.every(m => m.completed)
+}
+
+const isTournamentFinished = myTournament => myTournament.currentRound > totalRounds.calculate(myTournament.players.length)
 
 const generateSwissRound = myTournament => {
   let round = initialiseSwissRound(myTournament)
