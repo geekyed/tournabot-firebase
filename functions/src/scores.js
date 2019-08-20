@@ -62,7 +62,7 @@ const get = tournament => {
   })
 }
 
-exports.getFullySorted = tournament => {
+const getFullySorted = tournament => {
   return get(tournament).sort((a, b) => {
     if (a.points === b.points) {
       if (a.oppMatchWinPerc === b.oppMatchWinPerc) {
@@ -77,7 +77,7 @@ exports.getFullySorted = tournament => {
   })
 }
 
-exports.getForNewRound = tournament => {
+const getForNewRound = tournament => {
   if (tournament.currentRound === 1) {
     return tournament.players.map(player => ({ name: player })).sort(() => { return 0.5 - Math.random() })
   }
@@ -89,3 +89,5 @@ exports.getForNewRound = tournament => {
     return a.points - b.points
   })
 }
+
+module.exports = { getForNewRound, getFullySorted, get }
