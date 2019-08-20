@@ -29,6 +29,7 @@ exports.execute = async data => {
   if (!matchFound) throw new Error(`No current match found in tournament: ${myTournament.name}, in channel: <#${data.channelID.split('-')[1]}> for player: <@${data.userID}>`)
 
   storePoints(round, matchFound)
+  round.started = true
   await tournament.set(myTournament)
   return { type: 'text', data: { messages: ['Saved'], context: `current tournament ${tournamentID}` } }
 }
