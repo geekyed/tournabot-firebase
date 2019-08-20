@@ -10,9 +10,7 @@ exports.execute = async data => {
   if (!myTournament.players) myTournament.players = []
 
   data.players.forEach(player => {
-    if (!elementIsInArray(player, myTournament.players)) {
-      myTournament.players.push(player)
-    }
+    if (!myTournament.players.includes(player)) myTournament.players.push(player)
   })
 
   await tournament.set(myTournament)
@@ -20,8 +18,4 @@ exports.execute = async data => {
   let messages = ['*Current Players*']
   myTournament.players.forEach(player => messages.push(player))
   return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
-}
-
-const elementIsInArray = (myElement, myArray) => {
-  return (myArray.findIndex(el => el === myElement) !== -1)
 }

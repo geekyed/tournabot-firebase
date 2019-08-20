@@ -9,7 +9,8 @@ const send = async (responseURL, data) => {
     }
   }
 
-  await fetch(responseURL, responseBody)
+  const response = await fetch(responseURL, responseBody)
+  if (response.status !== 200) throw new Error(`Sending response to slack failed. Status: ${response.status}, Body: ${response.body}`)
 }
 
 const create = (messages, context) => {

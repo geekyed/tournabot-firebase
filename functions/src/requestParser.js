@@ -1,34 +1,31 @@
 const parseRequest = async requestBody => {
-  const firstParameter = requestBody.text.split(' ')[0]
+  let type = requestBody.text.split(' ')[0].toLowerCase()
   let parameters = stripCommand(requestBody.text)
 
-  const channelIdWithTeam = `${requestBody.team_id}-${requestBody.channel_id}`
+  let data = {
+    channelID: `${requestBody.team_id}-${requestBody.channel_id}`,
+    responseURL: requestBody.response_url
+  }
 
-  let data = {}
-
-  switch (firstParameter.toLowerCase()) {
+  switch (type) {
     case 'new':
-      data = { name: parameters[0] }
+      data.name = parameters[0]
       break
     case 'players':
-      data = { players: parameters }
+      data.players = parameters
       break
     case 'start':
     case 'scores':
     case 'points':
       break
     case 'result':
-      data = { userID: requestBody.user_id }
-      break
-    case 'help':
+      data.userID = requestBody.user_id
       break
     default:
       throw new Error('Command not found')
   }
 
-  data.channelID = channelIdWithTeam
-
-  return { type: firstParameter.toLowerCase(), data }
+  return { type, data: JSON.stringify(data) }
 }
 
 const stripCommand = (text) => {

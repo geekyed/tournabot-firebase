@@ -1,9 +1,10 @@
 const fetch = require('node-fetch')
 
-const send = async (responseURL, type, buttons, context) => {
+const send = async (responseURL, data) => {
+  console.log('buttons response', responseURL, data)
   const responseBody = {
     method: 'POST',
-    body: JSON.stringify(create(type, buttons, context)),
+    body: JSON.stringify(create(data.type, data.buttons, data.context)),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -12,33 +13,47 @@ const send = async (responseURL, type, buttons, context) => {
   await fetch(responseURL, responseBody)
 }
 
-const create = (type, buttons) => {
-  let response = {
-    response_type: type,
-    blocks: []
-  }
+const create = (type, buttons, context) => {
+  let elements = []
 
   buttons.forEach(button => {
-    createButton(response, button.name, button.id)
+    createButton(elements, button.name, button.id)
   })
+
+  let response = {
+    response_type: type,
+    blocks: [{
+      type: 'actions',
+      elements
+    }]
+  }
+
+  if (context) {
+    response.blocks.push({
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: context
+        }
+      ]
+    })
+  }
 
   return response
 }
 
-const createButton = (response, name, actionId) => {
-  response.blocks.push({
-    type: 'actions',
-    elements: [{
-      type: 'button',
-      action_id: actionId,
-      text: {
-        type: 'plain_text',
-        text: name,
-        emoji: true
-      }
-    }]
+const createButton = (elements, name, actionId) => {
+  elements.push({
+    type: 'button',
+    action_id: actionId,
+    text: {
+      type: 'plain_text',
+      text: name,
+      emoji: true
+    }
   })
-  return response
+  return elements
 }
 
 module.exports = { create, send }

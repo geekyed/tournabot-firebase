@@ -13,10 +13,10 @@ const create = text => {
   }
 }
 
-const send = async (responseURL, text) => {
+const send = async (responseURL, data) => {
   const responseBody = {
     method: 'POST',
-    body: JSON.stringify(create(text)),
+    body: JSON.stringify(create(data.text)),
     headers: {
       'Content-Type': 'application/json'
     }
