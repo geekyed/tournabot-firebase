@@ -13,7 +13,7 @@ exports.execute = async data => {
 
   if (isRoundStarted(myTournament)) throw new Error('You cannot regenerate a round once a match has been played.')
 
-  if (isTournamentFinished(myTournament)) return { type: 'text', data: { messages: ['Tournament Finished'], context: `current tournament ${tournamentID}` } }
+  if (isTournamentFinished(myTournament)) return craftTournamentFinishedResponse(myTournament)
 
   myTournament.rounds[myTournament.currentRound - 1] = generateSwissRound(myTournament)
   await tournament.set(myTournament)
@@ -22,6 +22,13 @@ exports.execute = async data => {
   messages.unshift(`*Pairings for round ${myTournament.currentRound}*`)
 
   return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
+}
+
+const craftTournamentFinishedResponse = tournament => {
+  let messages = ['*Tournament Finished*']
+  const finalResults = scores.getFullySorted(tournament)
+  finalResults.forEach(score => messages.push(`*${score.points}pts* *${nameWithoutAt(score.name)}* (OMWP ${Math.round(score.oppMatchWinPerc)}%  GWP ${Math.round(score.gameWinPerc)}% OGWP ${Math.round(score.oppGameWinPerc)}%)`))
+  return { type: 'text', data: { messages, context: `current tournament ${tournament.name}` } }
 }
 
 const isRoundStarted = myTournament => {
@@ -89,4 +96,8 @@ const createMatch = (player1Name, player2Name) => {
       player2: 0
     }
   }
+}
+
+const nameWithoutAt = player => {
+  return player.includes('@') ? player.split('@')[1].split('|')[1].replace('>', '') : player
 }

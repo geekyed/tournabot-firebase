@@ -64,16 +64,16 @@ const get = tournament => {
 
 const getFullySorted = tournament => {
   return get(tournament).sort((a, b) => {
-    if (a.points === b.points) {
-      if (a.oppMatchWinPerc === b.oppMatchWinPerc) {
-        if (a.gameWinPerc === b.gameWinPerc) {
-          return a.oppGameWinPerc - b.oppGameWinPerc
+    if (b.points === a.points) {
+      if (b.oppMatchWinPerc === a.oppMatchWinPerc) {
+        if (b.gameWinPerc === a.gameWinPerc) {
+          return b.oppGameWinPerc - a.oppGameWinPerc
         }
-        return a.gameWinPerc - b.gameWinPerc
+        return b.gameWinPerc - a.gameWinPerc
       }
-      return a.oppMatchWinPerc - b.oppMatchWinPerc
+      return b.oppMatchWinPerc - a.oppMatchWinPerc
     }
-    return a.points - b.points
+    return b.points - a.points
   })
 }
 
