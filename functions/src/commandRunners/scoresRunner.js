@@ -25,5 +25,5 @@ exports.execute = async data => {
 }
 
 const nameWithoutAt = player => {
-  return player.includes('@') ? player.split('@')[1] : player
+  return player.includes('@') ? player.split('@')[1].split('|')[1].replace('>', '') : player
 }

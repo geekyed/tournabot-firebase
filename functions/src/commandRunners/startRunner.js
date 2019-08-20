@@ -25,7 +25,7 @@ const isRoundStarted = myTournament => {
 
 const generateSwissRound = myTournament => {
   let round = initialiseSwissRound(myTournament)
-  let players = scores.getForNewRound(myTournament)
+  let players = myTournament.currentRound === 1 ? scores.getForNewRound(myTournament) : scores.get(myTournament)
 
   while (players.length !== 0) {
     const player1 = players.pop()

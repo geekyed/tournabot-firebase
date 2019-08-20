@@ -56,13 +56,7 @@ const get = tournament => {
 
   return totalScores.sort((a, b) => {
     if (a.points === b.points) {
-      if (a.oppMatchWinPerc === b.oppMatchWinPerc) {
-        if (a.gameWinPerc === b.gameWinPerc) {
-          return a.oppGameWinPerc - b.oppGameWinPerc
-        }
-        return a.gameWinPerc - b.gameWinPerc
-      }
-      return a.oppMatchWinPerc - b.oppMatchWinPerc
+      return 0.5 - Math.random()
     }
     return a.points - b.points
   })
