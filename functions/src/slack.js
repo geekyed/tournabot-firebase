@@ -14,6 +14,7 @@ const startRunner = require('./commandRunners/startRunner')
 const scoresRunner = require('./commandRunners/scoresRunner')
 const resultRunner = require('./commandRunners/resultRunner')
 const resultClickRunner = require('./commandRunners/resultClickRunner')
+const pointsRunner = require('./commandRunners/pointsRunner')
 
 const parseRequest = require('./requestParser')
 const parseAction = require('./actionParser')
@@ -24,7 +25,8 @@ const commandRunners = {
   'start': startRunner,
   'scores': scoresRunner,
   'result': resultRunner,
-  'resultClick': resultClickRunner
+  'resultClick': resultClickRunner,
+  'points': pointsRunner
 }
 
 const slackResponses = {

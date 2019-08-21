@@ -2,6 +2,7 @@ const tournament = require('../data/tournament')
 const current = require('../data/current')
 const scores = require('../scores')
 const totalRounds = require('../totalRounds')
+const pointsResponse = require('../pointsResponse')
 
 exports.execute = async data => {
   const tournamentID = await current.get(data.channelID)
@@ -24,12 +25,7 @@ exports.execute = async data => {
   return { type: 'text', data: { messages, context: `current tournament ${tournamentID}` } }
 }
 
-const craftTournamentFinishedResponse = tournament => {
-  let messages = ['*Tournament Finished*']
-  const finalResults = scores.getFullySorted(tournament)
-  finalResults.forEach(score => messages.push(`*${score.points}pts* *${nameWithoutAt(score.name)}* (OMWP ${Math.round(score.oppMatchWinPerc)}%  GWP ${Math.round(score.gameWinPerc)}% OGWP ${Math.round(score.oppGameWinPerc)}%)`))
-  return { type: 'text', data: { messages, context: `current tournament ${tournament.name}` } }
-}
+const craftTournamentFinishedResponse = myTournament => pointsResponse.craft('*Tournament Finished*', myTournament)
 
 const isRoundStarted = myTournament => {
   const roundIndex = myTournament.currentRound - 1
