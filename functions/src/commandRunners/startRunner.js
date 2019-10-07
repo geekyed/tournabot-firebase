@@ -34,7 +34,7 @@ const isRoundStarted = myTournament => {
 
 const isRoundFinished = myTournament => {
   const roundIndex = myTournament.currentRound - 1
-  return myTournament.rounds[roundIndex].matches.every(m => m.completed)
+  return typeof myTournament.rounds[roundIndex] !== 'undefined' && myTournament.rounds[roundIndex].matches.every(m => m.completed)
 }
 
 const isTournamentFinished = myTournament => myTournament.currentRound > totalRounds.calculate(myTournament.players.length)
