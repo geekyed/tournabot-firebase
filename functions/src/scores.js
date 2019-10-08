@@ -33,7 +33,7 @@ const get = tournament => {
     }
     // Lowest win %age is 33% to even out low scoring players - https://www.wizards.com/dci/downloads/tiebreakers.pdf
     matchWinPercentage[name] = Math.max((points[name] / (tournament.rounds.length * 3)), 0.33) * 100
-    gameWinPercentage[name] = (gamePoints / (gamesPlayed * 3)) * 100
+    gameWinPercentage[name] = gamesPlayed > 0 && gamePoints > 0 ? (gamePoints / (gamesPlayed * 3)) * 100 : 0
   })
 
   tournament.players.forEach(name => {
