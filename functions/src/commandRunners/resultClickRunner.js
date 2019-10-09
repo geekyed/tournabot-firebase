@@ -3,6 +3,7 @@ const current = require('../data/current')
 
 const Win = 3
 const Draw = 1
+const Lose = 0
 
 exports.execute = async data => {
   console.log('Click Runner', data)
@@ -41,9 +42,13 @@ const setScores = (match, p1Score, p2Score) => {
 }
 
 const storePoints = (round, match) => {
-  if (match.score.player1 > match.score.player2) round.points[match.player1] = Win
-  if (match.score.player2 > match.score.player1) round.points[match.player2] = Win
-  if (match.score.player1 === match.score.player2) {
+  if (match.score.player1 > match.score.player2) {
+    round.points[match.player1] = Win
+    round.points[match.player2] = Lose
+  } else if (match.score.player2 > match.score.player1) {
+    round.points[match.player2] = Win
+    round.points[match.player1] = Lose
+  } else {
     round.points[match.player1] = Draw
     round.points[match.player2] = Draw
   }
